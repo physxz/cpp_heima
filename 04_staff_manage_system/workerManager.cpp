@@ -6,7 +6,7 @@ WorkerManager::WorkerManager() // 构造函数的空实现
 
 }
 
-void WorkerManager::Show_Menu() // 展示菜单
+void WorkerManager::showMenu() // 展示菜单
 {
     cout << "*************************************************" << endl;
     cout << "************* 欢迎使用职工管理系统！ ************" << endl;
@@ -22,7 +22,7 @@ void WorkerManager::Show_Menu() // 展示菜单
     cout << endl;
 }
 
-void WorkerManager::Exit_System() // 退出系统
+void WorkerManager::exitSystem() // 退出系统
 {
     cout << "欢迎下次使用" << endl;
     getchar(); // 暂停，按任意键后继续

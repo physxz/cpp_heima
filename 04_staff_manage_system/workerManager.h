@@ -8,9 +8,9 @@ class WorkerManager
 public:
     WorkerManager(); // 构造函数
     
-    void Show_Menu(); // 展示菜单
+    void showMenu(); // 展示菜单
 
-    void Exit_System(); // 退出系统
+    void exitSystem(); // 退出系统
 
     ~WorkerManager(); // 析构函数
 };
