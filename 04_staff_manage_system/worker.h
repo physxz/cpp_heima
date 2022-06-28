@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-// 职工抽象类(不需要实现，不需要写对应worker.cpp源文件，需要创建子类)
+// 职工抽象类(不需要实现，不需要写对应worker.cpp源文件，具体实现由子类完成)
 class Worker
 {
 public:

@@ -7,7 +7,7 @@ using namespace std;
 class Employee: public Worker
 {
 public:
-    Employee(int id, string name, int dId); // 构造函数(初始化)
+    Employee(int id, string name, int dId); // 构造函数
     // 只做声明(也要重写)(virtual关键字可删可不删)
     virtual void showInfo(); // 显示个人信息
     virtual string getDeptName(); // 获取岗位名称
