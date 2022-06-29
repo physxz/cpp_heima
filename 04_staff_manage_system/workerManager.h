@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string>
 #include <fstream>
 #include "worker.h"
 #include "employee.h"
@@ -21,6 +22,10 @@ public:
 
     void save(); // 保存职工到文件
 
+    int getEmpNum(); // 统计文件中的人数
+
+    void initEmp();
+
     void exitSystem(); // 退出系统
 
     ~WorkerManager(); // 析构函数
@@ -28,6 +33,5 @@ public:
     // 成员属性
     int m_EmpNum; // 记录文件中的人数
     Worker ** m_EmpArray; // 员工数组的指针
-    
     bool m_FileIsEmpty; // 判断文件是否为空
 };

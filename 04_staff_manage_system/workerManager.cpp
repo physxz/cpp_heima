@@ -9,13 +9,40 @@ WorkerManager::WorkerManager() // 构造函数的空实现
 
     if ( !ifs.is_open() )
     {
-        cout << "文件不存在" << endl;
+        cout << "文件不存在！" << endl;
         // 初始化属性
         this->m_EmpNum = 0; // 初始化记录人数
         this->m_EmpArray = nullptr; // 初始化数组指针
         this->m_FileIsEmpty = true; // 初始化文件是否为空
         ifs.close();
         return;
+    }
+
+    // 2.文件存在但数据为空
+    char ch;
+    ifs >> ch; // 从文件中读取一个字符
+    if ( ifs.eof() ) // 读取到的字符为EOF(文件尾)为真
+    {
+        cout << "文件为空！" << endl;
+        this->m_EmpNum = 0;
+        this->m_FileIsEmpty = true;
+        this->m_EmpArray = nullptr;
+        ifs.close();
+        return;
+    }
+
+    // 3.文件存在，并且有记录数据
+    int num = this->getEmpNum();
+    cout << "职工人数为：" << num << endl;
+    this->m_EmpNum = num;
+    this->m_EmpArray = new Worker * [this->m_EmpNum];
+    initEmp();
+    // 测试代码
+    for (int i = 0; i < m_EmpNum; i++)
+    {
+        cout << "职工编号：" << this->m_EmpArray[i]->m_Id << "\t"
+             << "职工姓名：" << this->m_EmpArray[i]->m_name << "\t"
+             << "部门编号：" << this->m_EmpArray[i]->m_DeptId << endl;
     }
 }
 
@@ -100,6 +127,8 @@ void WorkerManager::addEmp() // 添加成员
         this->m_EmpArray = newSpace;
         // 更新新的职工人数
         this->m_EmpNum = newSize;
+        // 更新职工不为空标志
+        this->m_FileIsEmpty = false; // 添加职工之后文件不为空
         // 提示添加成功
         cout << "成功添加 " << addNum << " 名职工" << endl;
         // 保存数据到文件中
@@ -130,6 +159,59 @@ void WorkerManager::save()
     }
 
     ofs.close();
+}
+
+int WorkerManager::getEmpNum()
+{
+    ifstream ifs;
+    ifs.open(FILENAME, ios::in);
+
+    int id;
+    string name;
+    int dId;
+
+    int num = 0;
+
+    while (ifs >> id && ifs >> name && ifs >> dId)
+    {
+        num++; // 记录人数
+    }
+    ifs.close();
+    return num;
+}
+
+void WorkerManager::initEmp()
+{
+    ifstream ifs;
+    ifs.open(FILENAME, ios::in);
+
+    int id;
+    string name;
+    int dId;
+
+    int index = 0;
+    while (ifs >> id && ifs >> name && ifs >> dId)
+    {
+        Worker * worker = nullptr;
+
+        // 根据不同的部门id创建不同对象
+        if (dId == 1)
+        {
+            worker = new Employee(id, name, dId);
+        }
+        else if (dId == 2)
+        {
+            worker = new Manager(id, name, dId);
+        }
+        else
+        {
+            worker = new Boss(id, name, dId);
+        }
+
+        // 存放在数组中
+        this->m_EmpArray[index] = worker;
+        index++;
+    }
 }
 
 void WorkerManager::exitSystem() // 退出系统
