@@ -9,7 +9,7 @@ WorkerManager::WorkerManager() // 构造函数的空实现
 
     if ( !ifs.is_open() )
     {
-        cout << "文件不存在！" << endl;
+        // cout << "文件不存在！" << endl;
         // 初始化属性
         this->m_EmpNum = 0; // 初始化记录人数
         this->m_EmpArray = nullptr; // 初始化数组指针
@@ -23,7 +23,7 @@ WorkerManager::WorkerManager() // 构造函数的空实现
     ifs >> ch; // 从文件中读取一个字符
     if ( ifs.eof() ) // 读取到的字符为EOF(文件尾)为真
     {
-        cout << "文件为空！" << endl;
+        // cout << "文件为空！" << endl;
         this->m_EmpNum = 0;
         this->m_FileIsEmpty = true;
         this->m_EmpArray = nullptr;
@@ -33,17 +33,17 @@ WorkerManager::WorkerManager() // 构造函数的空实现
 
     // 3.文件存在，并且有记录数据
     int num = this->getEmpNum();
-    cout << "职工人数为：" << num << endl;
+    // cout << "职工人数为：" << num << endl;
     this->m_EmpNum = num;
     this->m_EmpArray = new Worker * [this->m_EmpNum];
     initEmp();
     // 测试代码
-    for (int i = 0; i < m_EmpNum; i++)
-    {
-        cout << "职工编号：" << this->m_EmpArray[i]->m_Id << "\t"
-             << "职工姓名：" << this->m_EmpArray[i]->m_name << "\t"
-             << "部门编号：" << this->m_EmpArray[i]->m_DeptId << endl;
-    }
+    // for (int i = 0; i < m_EmpNum; i++)
+    // {
+    //     cout << "职工编号：" << this->m_EmpArray[i]->m_Id << "\t"
+    //          << "职工姓名：" << this->m_EmpArray[i]->m_name << "\t"
+    //          << "部门编号：" << this->m_EmpArray[i]->m_DeptId << endl;
+    // }
 }
 
 void WorkerManager::showMenu() // 展示菜单
