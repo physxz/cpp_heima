@@ -28,11 +28,17 @@ public:
 
     void showEmp(); // 显示职工
 
-    void delEmp(); // 删除职工
-
     int isExist(int id); // 职工编号是否存在
 
+    void delEmp(); // 删除职工
+
     void modEmp(); // 修改职工
+
+    void findEmp(); // 查找职工
+
+    void sortEmp(); // 排序职工
+
+    void cleanFile(); // 清空文件
 
     void exitSystem(); // 退出系统
 

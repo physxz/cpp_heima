@@ -293,7 +293,7 @@ void WorkerManager::delEmp()
             cout << "删除失败，未找到该职工" << endl;
         }
     }
-    
+
     cout << "请按任意键继续..." << endl;
     getchar(); // 暂停，按任意键后继续
     getchar(); // 暂停，按任意键后继续
@@ -360,6 +360,176 @@ void WorkerManager::modEmp()
         }
     }
 
+    cout << "请按任意键继续..." << endl;
+    getchar(); // 暂停，按任意键后继续
+    getchar(); // 暂停，按任意键后继续
+    system("clear || cls");
+}
+
+// 查找职工
+void WorkerManager::findEmp()
+{
+    if (this->m_FileIsEmpty)
+    {
+        cout << "文件不存在或记录为空" << endl;
+    }
+    else
+    {
+        cout << "请输入查找的方式：" << "\n"
+             << "1. 按职工编号查找" << "\n"
+             << "2. 按姓名查找" << endl;
+        
+        int select = 0;
+        cin >> select;
+
+        if (select == 1) // 按编号查找
+        {
+            int id;
+            cout << "请输入查找的职工编号：" << endl;
+            cin >> id;
+            int ret = this->isExist(id);
+            if (ret != -1) // 找到职工
+            {
+                cout << "查找成功！该职工信息如下：" << endl;
+                this->m_EmpArray[ret]->showInfo();
+            }
+            else
+            {
+                cout << "查找失败，查无此人" << endl;
+            }
+        }
+        else if (select == 2) // 按姓名查找
+        {
+            string name;
+            cout << "请输入查找的职工姓名：" << endl;
+            cin >> name;
+
+            // 判断是否查到的标志
+            bool flag = false; // 默认未找到职工
+
+            for (int i = 0; i < this->m_EmpNum; i++)
+            {
+                if ( name == this->m_EmpArray[i]->m_name )
+                {
+                    cout << "查找成功，职工编号为："
+                         << this->m_EmpArray[i]->m_Id << "，"
+                         << "该职工信息如下：" << endl;
+                    // 调用显示信息接口
+                    this->m_EmpArray[i]->showInfo();
+                    // 将查找到的标志置为true
+                    flag = true;
+                }
+            }
+            if (flag == false)
+            {
+                cout << "查找失败，查无此人" << endl;
+            }
+        }
+        else
+        {
+            cout << "输入选项有误，请重新输入" << endl;
+        }
+    }
+
+    cout << "请按任意键继续..." << endl;
+    getchar(); // 暂停，按任意键后继续
+    getchar(); // 暂停，按任意键后继续
+    system("clear || cls");
+}
+
+void WorkerManager::sortEmp()
+{
+    if (this->m_FileIsEmpty)
+    {
+        cout << "文件不存在或记录为空" << endl;
+        cout << "请按任意键继续..." << endl;
+        getchar(); // 暂停，按任意键后继续
+        getchar(); // 暂停，按任意键后继续
+        system("clear || cls");
+    }
+    else
+    {
+        cout << "请选择排序方式" << "\n"
+             << "1. 按职工编号升序" << "\n"
+             << "2. 按职工编号降序" << endl;
+
+        int select = 0;
+        cin >> select;
+
+        for (int i = 0; i < this->m_EmpNum; i++)
+        {
+            int minOrMax = i; // 声明最小值或最大值下标
+
+            for (int j = i+1; j < this->m_EmpNum; j++)
+            {
+                if (select == 1) // 升序
+                {
+                    if (this->m_EmpArray[minOrMax]->m_Id > this->m_EmpArray[j]->m_Id)
+                    {
+                        minOrMax = j;
+                    }
+                }
+                else if (select == 2)
+                {
+                    if (this->m_EmpArray[minOrMax]->m_Id < this->m_EmpArray[j]->m_Id)
+                    {
+                        minOrMax = j;
+                    }
+                }
+                else
+                {
+                    cout << "输入错误，请重新输入" << endl;
+                }
+            }
+
+            // 判断一开始认定最小值或最大值是不是计算的最小值或最大值，如果不是，交换数据
+            if (i != minOrMax)
+            {
+                Worker * temp = this->m_EmpArray[i];
+                this->m_EmpArray[i] = this->m_EmpArray[minOrMax];
+                m_EmpArray[minOrMax] = temp;
+            }
+        }
+        cout << "排序成功，排序后的结果为：" << endl;
+        this->save(); // 将排序后的结果保存到文件中
+        this->showEmp();
+    }
+}
+
+void WorkerManager::cleanFile()
+{
+    cout << "确认清空" << "\n"
+         << "1. 确认" << "\n"
+         << "2. 返回" << endl;
+
+    int select = 0;
+    cin >> select;
+
+    if(select == 1)
+    {
+        ofstream ofs(FILENAME, ios::trunc);
+        ofs.close();
+
+        if (this->m_EmpArray != nullptr)
+        {
+            // 删除堆区的每个职工对象
+            for (int i = 0; i < this->m_EmpNum; i++)
+            {
+                if (this->m_EmpArray[i] != nullptr)
+                {
+                    delete this->m_EmpArray[i];
+                    this->m_EmpArray[i] = nullptr;
+                }
+            }
+
+            // 删除堆区数组指针
+            delete[] this->m_EmpArray;
+            this->m_EmpArray = nullptr;
+            this->m_EmpNum = 0;
+            this->m_FileIsEmpty = true;
+        }
+        cout << "清空成功！" << endl;
+    }
     cout << "请按任意键继续..." << endl;
     getchar(); // 暂停，按任意键后继续
     getchar(); // 暂停，按任意键后继续

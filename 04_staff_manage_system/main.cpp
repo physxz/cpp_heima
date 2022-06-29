@@ -50,10 +50,13 @@ int main()
                 wm.modEmp();
                 break;
             case 5: // 查找职工
+                wm.findEmp();
                 break;
             case 6: // 排序职工
+                wm.sortEmp();
                 break;
             case 7: // 清空文档
+                wm.cleanFile();
                 break;
             default: // 清屏操作
                 system("clear || cls");
