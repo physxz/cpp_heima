@@ -1,7 +1,8 @@
 #include "workerManager.h"
 
 // 类内声明类外实现(构造和析构函数的空实现科可写可不写，编译器会自动添加，但是写上方便后边初始化操作)
-WorkerManager::WorkerManager() // 构造函数的空实现
+// 构造函数的实现(初始化)
+WorkerManager::WorkerManager()
 {
     // 1.文件不存在的情况
     ifstream ifs;
@@ -46,7 +47,8 @@ WorkerManager::WorkerManager() // 构造函数的空实现
     // }
 }
 
-void WorkerManager::showMenu() // 展示菜单
+// 展示菜单
+void WorkerManager::showMenu()
 {
     cout << "*************************************************" << endl;
     cout << "************* 欢迎使用职工管理系统！ ************" << endl;
@@ -62,7 +64,8 @@ void WorkerManager::showMenu() // 展示菜单
     cout << endl;
 }
 
-void WorkerManager::addEmp() // 添加成员
+// 添加成员
+void WorkerManager::addEmp()
 {
     cout << "请输入增加职工数量：" << endl;
     int addNum = 0;
@@ -146,6 +149,7 @@ void WorkerManager::addEmp() // 添加成员
     system("clear || cls");
 }
 
+// 保存职工到文件
 void WorkerManager::save()
 {
     ofstream ofs;
@@ -161,7 +165,8 @@ void WorkerManager::save()
     ofs.close();
 }
 
-int WorkerManager::getEmpNum()
+// 获取职工人数
+int WorkerManager::getEmpNum() 
 {
     ifstream ifs;
     ifs.open(FILENAME, ios::in);
@@ -180,6 +185,7 @@ int WorkerManager::getEmpNum()
     return num;
 }
 
+// 初始化职工
 void WorkerManager::initEmp()
 {
     ifstream ifs;
@@ -214,7 +220,154 @@ void WorkerManager::initEmp()
     }
 }
 
-void WorkerManager::exitSystem() // 退出系统
+// 显示职工
+void WorkerManager::showEmp()
+{
+    if (this->m_FileIsEmpty)
+    {
+        cout << "文件不存在或记录为空" << endl;
+    }
+    else
+    {
+        for (int i = 0; i < this->m_EmpNum; i++)
+        {
+            // 利用多态调用接口
+            this->m_EmpArray[i]->showInfo();
+        }
+    }
+
+    // 按任意键清屏
+    cout << "请按任意键继续..." << endl;
+    getchar(); // 暂停，按任意键后继续
+    getchar(); // 暂停，按任意键后继续
+    system("clear || cls");
+}
+
+// 判断职工是否存在
+int WorkerManager::isExist(int id)
+{
+    int index = -1; // 默认不存在，就是return -1
+
+    for (int i = 0; i < this->m_EmpNum; i++)
+    {
+        if (this->m_EmpArray[i]->m_Id == id)
+        {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+// 删除职工
+void WorkerManager::delEmp()
+{
+    if (this->m_FileIsEmpty)
+    {
+        cout << "文件不存在或记录为空" << endl;
+    }
+    else
+    {
+        // 按照职工编号删除职工
+        cout << "请输入想要删除的职工编号" << endl;
+        int id = 0;
+        cin >> id;
+
+        int index = this->isExist(id);
+        if (index != -1)
+        {
+            // 数据前移
+            for (int i = index; i < this->m_EmpNum-1; i++)
+            {
+                this->m_EmpArray[i] = this->m_EmpArray[i+1];
+            }
+            // 更新数组中记录的人员个数
+            this->m_EmpNum--;
+            // 数据同步更新到文件中
+            this->save();
+            
+            cout << "删除成功！" << endl;
+        }
+        else
+        {
+            cout << "删除失败，未找到该职工" << endl;
+        }
+    }
+    
+    cout << "请按任意键继续..." << endl;
+    getchar(); // 暂停，按任意键后继续
+    getchar(); // 暂停，按任意键后继续
+    system("clear || cls");
+}
+
+void WorkerManager::modEmp()
+{
+    if(this->m_FileIsEmpty)
+    {
+        cout << "文件不存在或记录为空！" << endl;
+    }
+    else
+    {
+        cout << "请输入要修改职工的编号：" << endl;
+        int id;
+        cin >> id;
+
+        int ret = this->isExist(id);
+        if (ret != -1)
+        {
+            delete this->m_EmpArray[ret];
+            int newId = 0;
+            string newName = "";
+            int dSelect = 0;
+
+            cout << "查到：" << id << "号职工，请输入新职工编号：" << endl;
+            cin >> newId;
+            cout << "请输入新姓名：" << newName << endl;
+            cin >> newName;
+            cout << "请输入岗位：" << "\n"
+                 << "1. 普通职工" << "\n"
+                 << "2. 经理" << "\n"
+                 << "3. 老板" << endl;
+            cin >> dSelect;
+
+            Worker * worker = nullptr;
+            switch (dSelect)
+            {
+            case 1:
+                worker = new Employee(newId, newName, dSelect);
+                break;
+            case 2:
+                worker = new Manager(newId, newName, dSelect);
+                break;
+            case 3:
+                worker = new Boss(newId, newName, dSelect);
+                break;
+            default:
+                break;
+            }
+
+            // 更改数据到数组中
+            this->m_EmpArray[ret] = worker;
+
+            cout << "修改成功！" << this->m_EmpArray[ret]->m_DeptId << endl;
+
+            // 保存到文件中
+            this->save();
+        }
+        else
+        {
+            cout << "修改失败，未找到该职工" << endl;
+        }
+    }
+
+    cout << "请按任意键继续..." << endl;
+    getchar(); // 暂停，按任意键后继续
+    getchar(); // 暂停，按任意键后继续
+    system("clear || cls");
+}
+
+// 退出系统
+void WorkerManager::exitSystem()
 {
     cout << "欢迎下次使用" << endl;
     cout << "请按任意键继续..." << endl;
@@ -223,7 +376,8 @@ void WorkerManager::exitSystem() // 退出系统
     exit(0);
 }
 
-WorkerManager::~WorkerManager() // 析构函数的空实现
+// 析构函数的实现
+WorkerManager::~WorkerManager()
 {
     // 堆区代码手动开辟手动释放
     if (this->m_EmpArray != nullptr)

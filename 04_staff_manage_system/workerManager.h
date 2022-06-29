@@ -24,7 +24,15 @@ public:
 
     int getEmpNum(); // 统计文件中的人数
 
-    void initEmp();
+    void initEmp(); // 初始化职工
+
+    void showEmp(); // 显示职工
+
+    void delEmp(); // 删除职工
+
+    int isExist(int id); // 职工编号是否存在
+
+    void modEmp(); // 修改职工
 
     void exitSystem(); // 退出系统
 
