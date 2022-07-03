@@ -7,7 +7,7 @@ vector互换容器
 - swap(vec); // 将vec与本身的元素互换
 */
 
-void printVector(vector<int> v)
+void printVector(vector<int> &v)
 {
     for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
     {

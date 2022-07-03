@@ -9,7 +9,7 @@ vector赋值操作
 - assign(n, elem); // 将n个elem拷贝赋值给本身
 */
 
-void printVector(vector<int> v)
+void printVector(vector<int> &v)
 {
     for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
     {

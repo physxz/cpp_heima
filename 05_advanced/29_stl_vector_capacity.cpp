@@ -13,7 +13,7 @@ vector容量和大小
                          // 如果容器变短，则末尾超出容器长度的元素被删除
 */
 
-void printVector(vector<int> v)
+void printVector(vector<int> &v)
 {
     for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
     {

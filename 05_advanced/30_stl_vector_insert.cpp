@@ -13,7 +13,7 @@ vector插入和删除
 - clear(); // 删除容器中所有元素
 */
 
-void printVector(vector<int> v)
+void printVector(vector<int> &v)
 {
     for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
     {
