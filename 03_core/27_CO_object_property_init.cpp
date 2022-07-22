@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+// 简单(传统)初始化并不是真正意义的初始化。初始化列表是真正意义的初始化，效率高很多
+
 class Person
 {
 public:
